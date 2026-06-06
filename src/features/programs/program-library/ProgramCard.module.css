@@ -1,0 +1,83 @@
+/* file: src/features/programs/program-library/ProgramCard.module.css */
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid #afa18c;
+  border-radius: 8px;
+  background: #dccfc0;
+}
+
+.content {
+  min-width: 0;
+}
+
+.caption {
+  margin: 0 0 8px;
+  color: #6f7b67;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: #3e4a42;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  color: #3e4a42;
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.primaryButton,
+.deleteButton {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: 1px solid #6f7b67;
+  background: #6f7b67;
+  color: #f6f1ea;
+}
+
+.deleteButton {
+  border: 1px solid #afa18c;
+  background: transparent;
+  color: #3e4a42;
+}
+
+@media (max-width: 720px) {
+  .card {
+    flex-direction: column;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .primaryButton,
+  .deleteButton {
+    flex: 1;
+  }
+}

@@ -1,7 +1,9 @@
+import { ProgramListPage } from "./features/programs/program-library/ProgramListPage";
+
 import "./App.css";
 
 function App() {
-  return <></>;
+  return <ProgramListPage />;
 }
 
 export default App;
