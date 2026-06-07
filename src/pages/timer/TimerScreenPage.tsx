@@ -1,6 +1,8 @@
 // file: src/pages/timer/TimerScreenPage.tsx
+
 import type { YogaProgram } from "../../entities/program";
 import { ProgressCircle, useTimerEngine } from "../../features/timer";
+import { UseTimerSounds } from "../../shared/hooks/useTimerSounds";
 
 import styles from "./TimerScreen.module.css";
 
@@ -36,6 +38,8 @@ export function TimerScreenPage({
     reset,
   } = useTimerEngine(program);
 
+  const { playStartSound } = UseTimerSounds(state);
+
   const isIdle = state.status === "idle";
   const isRunning = state.status === "running";
   const isPaused = state.status === "paused";
@@ -65,6 +69,7 @@ export function TimerScreenPage({
       return;
     }
 
+    playStartSound();
     start();
   };
 
