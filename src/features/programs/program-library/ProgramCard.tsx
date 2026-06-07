@@ -26,7 +26,7 @@ export function ProgramCard({ program, onOpen, onDelete }: ProgramCardProps) {
 
         <div className={styles.meta}>
           <span>{formatDuration(totalDurationSeconds)}</span>
-          <span>{phaseCount} фаз</span>
+          <span>{phaseCount} этапов</span>
           <span>Обновлено {formatDate(program.updatedAt)}</span>
         </div>
       </div>

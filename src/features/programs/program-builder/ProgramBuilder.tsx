@@ -25,7 +25,7 @@ const PHASE_TYPE_OPTIONS: Array<{ value: PhaseType; label: string }> = [
   { value: "shavasana", label: "Шавасана" },
 ];
 
-const DEFAULT_PHASE_NAME = "Новая фаза";
+const DEFAULT_PHASE_NAME = "Новый этап";
 
 interface PhaseDraft {
   name: string;
@@ -100,14 +100,14 @@ export function ProgramBuilder() {
 
   const phaseNameError =
     phaseDraft.name.trim().length > MAX_PHASE_NAME_LENGTH
-      ? `Название фазы не должно быть длиннее ${MAX_PHASE_NAME_LENGTH} символов.`
+      ? `Название этапа не должно быть длиннее ${MAX_PHASE_NAME_LENGTH} символов.`
       : "";
 
   const phaseDurationSeconds = minutesToSeconds(phaseDraft.durationMinutes);
 
   const phaseDurationError =
     Number.isNaN(phaseDurationSeconds) || phaseDurationSeconds <= 0
-      ? "Укажите длительность фазы."
+      ? "Укажите длительность этапа."
       : phaseDurationSeconds < MIN_PHASE_DURATION_SECONDS
         ? `Минимальная длительность: ${formatDuration(MIN_PHASE_DURATION_SECONDS)}.`
         : phaseDurationSeconds > MAX_PHASE_DURATION_SECONDS
@@ -134,7 +134,7 @@ export function ProgramBuilder() {
       if (!editingPhaseId) {
         return [...currentPhases, nextPhase]; // Добавление
       }
-      // Редактирование: заменяем фазу с matching ID
+      // Редактирование: заменяем этап с matching ID
       return currentPhases.map((phase) =>
         phase.id === editingPhaseId ? nextPhase : phase,
       );
@@ -159,7 +159,7 @@ export function ProgramBuilder() {
       currentPhases.filter((phase) => phase.id !== phaseId),
     );
 
-    // Если удаляем фазу, которую сейчас редактируем, нужно сбросить форму
+    // Если удаляем этап, который сейчас редактируем, нужно сбросить форму
     if (editingPhaseId === phaseId) {
       setEditingPhaseId(null);
       setPhaseDraft(createEmptyDraft());
@@ -181,7 +181,8 @@ export function ProgramBuilder() {
           <p className={styles.caption}>Program Builder</p>
           <h1 id="program-builder-title">Конструктор практики</h1>
           <p className={styles.description}>
-            Соберите спокойную последовательность фаз для занятия хатха-йогой.
+            Соберите спокойную последовательность этапов для занятия
+            хатха-йогой.
           </p>
         </div>
 
@@ -202,7 +203,7 @@ export function ProgramBuilder() {
         <div className={styles.content}>
           <form className={styles.phaseForm} onSubmit={handlePhaseSubmit}>
             <div className={styles.formHeader}>
-              <h2>{editingPhaseId ? "Редактировать фазу" : "Добавить фазу"}</h2>
+              <h2>{editingPhaseId ? "Редактировать этап" : "Добавить этап"}</h2>
               {editingPhaseId ? (
                 <button
                   className={styles.textButton}
@@ -214,7 +215,7 @@ export function ProgramBuilder() {
               ) : null}
             </div>
 
-            <label htmlFor="phase-name">Название фазы</label>
+            <label htmlFor="phase-name">Название этапа</label>
             <input
               id="phase-name"
               maxLength={MAX_PHASE_NAME_LENGTH}
@@ -225,7 +226,7 @@ export function ProgramBuilder() {
               placeholder="Напрмер, Сурья Намаскар (Приветствие солнцу)"
             />
 
-            <label htmlFor="phase-type">Тип фазы</label>
+            <label htmlFor="phase-type">Тип этапа</label>
             <select
               id="phase-type"
               value={phaseDraft.type}
@@ -271,7 +272,7 @@ export function ProgramBuilder() {
               type="submit"
               disabled={!canSavePhase}
             >
-              {editingPhaseId ? "Сохранить фазу" : "Добавить фазу"}
+              {editingPhaseId ? "Сохранить этап" : "Добавить этап"}
             </button>
           </form>
 
@@ -291,14 +292,14 @@ export function ProgramBuilder() {
 
             {phases.length === 0 ? (
               <div className={styles.emptyState}>
-                <h3>Фаз пока нет</h3>
-                <p>Добавьте первую фазу, чтобы начать собирать практику.</p>
+                <h3>Этапов пока нет</h3>
+                <p>Добавьте первый этап, чтобы начать собирать практику.</p>
               </div>
             ) : (
               <ol className={styles.phases}>
                 {phases.map((phase, index) => (
                   <li className={styles.phaseCard} key={phase.id}>
-                    {/* index + 1 для отображения порядкового номера, т.к. порядок фаз важен для практики */}
+                    {/* index + 1 для отображения порядкового номера, т.к. порядок этапов важен для практики */}
                     <div className={styles.phaseNumber}>{index + 1}</div>
 
                     <div className={styles.phaseInfo}>

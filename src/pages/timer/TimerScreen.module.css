@@ -1,0 +1,142 @@
+/* file: src/pages/timer/TimerScreenPage.module.css */
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 24px;
+  background: #f6f1ea;
+  color: #3e4a42;
+}
+
+.screen {
+  width: min(100%, 560px);
+  display: grid;
+  gap: 32px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.heading {
+  display: grid;
+  gap: 8px;
+  text-align: center;
+}
+
+.heading h1,
+.phaseBlock h2,
+.nextBlock h3 {
+  margin: 0;
+  color: #3e4a42;
+  line-height: 1.15;
+}
+
+.heading h1 {
+  font-size: 28px;
+}
+
+.caption {
+  margin: 0;
+  color: #afa18c;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.phaseBlock,
+.nextBlock {
+  display: grid;
+  gap: 12px;
+  text-align: center;
+}
+
+.phaseBlock h2 {
+  font-size: 32px;
+}
+
+.phaseTime {
+  margin: 0;
+  color: #6f7b67;
+  font-size: 16px;
+}
+
+.nextBlock {
+  padding: 24px;
+  border-radius: 24px;
+  background: #dccfc0;
+}
+
+.nextBlock h3 {
+  font-size: 20px;
+}
+
+.controls {
+  display: grid;
+  gap: 16px;
+}
+
+.primaryButton,
+.secondaryButton,
+.backButton {
+  min-height: 48px;
+  border-radius: 999px;
+  border: 0;
+  padding: 0 24px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: #6f7b67;
+  color: #f6f1ea;
+}
+
+.secondaryButton {
+  background: transparent;
+  color: #6f7b67;
+  border: 1px solid #6f7b67;
+}
+
+.backButton {
+  min-height: 40px;
+  padding: 0 18px;
+  background: transparent;
+  color: #6f7b67;
+  border: 1px solid #afa18c;
+}
+
+.primaryButton:hover {
+  background: #3e4a42;
+}
+
+.secondaryButton:hover,
+.backButton:hover {
+  background: #dccfc0;
+}
+
+@media (max-width: 560px) {
+  .page {
+    padding: 32px 20px;
+  }
+
+  .screen {
+    gap: 28px;
+  }
+
+  .header {
+    grid-template-columns: 1fr;
+  }
+
+  .backButton {
+    justify-self: start;
+  }
+
+  .phaseBlock h2 {
+    font-size: 28px;
+  }
+}

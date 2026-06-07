@@ -1,0 +1,63 @@
+/* file: src/features/timer/ProgressCircle.module.css */
+.circle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.track,
+.progress {
+  fill: none;
+}
+
+.track {
+  stroke: #dccfc0;
+}
+
+.progress {
+  stroke: #6f7b67;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 300ms ease;
+}
+
+.content {
+  position: absolute;
+  display: grid;
+  gap: 8px;
+  place-items: center;
+  color: #3e4a42;
+  text-align: center;
+  pointer-events: none;
+}
+
+.label,
+.percent {
+  color: #afa18c;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.time {
+  font-size: clamp(48px, 12vw, 72px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+@media (max-width: 480px) {
+  .circle {
+    width: 240px !important;
+    height: 240px !important;
+  }
+}
