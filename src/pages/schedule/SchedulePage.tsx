@@ -45,10 +45,10 @@ export function SchedulePage({ onOpenProgram }: SchedulePageProps) {
               id="schedule-program"
               className={styles.select}
               value={formState.programId}
-              onChange={(event) =>
+              onChange={(e) =>
                 setFormState((currentState) => ({
                   ...currentState,
-                  programId: event.target.value,
+                  programId: e.target.value,
                 }))
               }
             >
@@ -83,10 +83,10 @@ export function SchedulePage({ onOpenProgram }: SchedulePageProps) {
               label="Время"
               type="time"
               value={formState.time}
-              onChange={(event) =>
+              onChange={(e) =>
                 setFormState((currentState) => ({
                   ...currentState,
-                  time: event.target.value,
+                  time: e.target.value,
                 }))
               }
             />
@@ -118,17 +118,17 @@ export function SchedulePage({ onOpenProgram }: SchedulePageProps) {
               min="1"
               type="number"
               value={formState.interval}
-              onChange={(event) =>
+              onChange={(e) =>
                 setFormState((currentState) => ({
                   ...currentState,
-                  interval: Number(event.target.value),
+                  interval: Number(e.target.value),
                 }))
               }
             />
           ) : null}
 
           {formState.repeat === "weekly" ? (
-            <div className={styles.weekday} aria-label="Дни недели">
+            <div className={styles.weekdays} aria-label="Дни недели">
               {WEEKDAY_OPTIONS.map((weekday) => (
                 <Button
                   key={weekday.value}
