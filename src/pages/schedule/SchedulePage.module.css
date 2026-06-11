@@ -1,0 +1,225 @@
+.page {
+  min-height: 100vh;
+  padding: 96px 24px 48px;
+  background: #f6f1ea;
+}
+
+.schedule {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.header {
+  max-width: 680px;
+  margin-bottom: 40px;
+}
+
+.caption {
+  margin: 0 0 8px;
+  color: #6f7b67;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.header h1,
+.emptyState h2,
+.card h2 {
+  margin: 0;
+  color: #3e4a42;
+  line-height: 1.15;
+}
+
+.header h1 {
+  font-size: clamp(36px, 8vw, 64px);
+}
+
+.description,
+.emptyState p,
+.meta,
+.nextRun {
+  margin: 16px 0 0;
+  color: #3e4a42;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.form,
+.emptyState,
+.card {
+  border: 1px solid #afa18c;
+  border-radius: 8px;
+  background: #dccfc0;
+}
+
+.form {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label,
+.checkbox {
+  color: #3e4a42;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  min-height: 44px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #afa18c;
+  border-radius: 8px;
+  background: #f6f1ea;
+  color: #3e4a42;
+  padding: 0 12px;
+  font: inherit;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.weekday,
+.weekdayActive {
+  min-height: 40px;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.weekday {
+  border: 1px solid #afa18c;
+  background: transparent;
+  color: #3e4a42;
+}
+
+.weekdayActive {
+  border: 1px solid #6f7b67;
+  background: #6f7b67;
+  color: #f6f1ea;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.actions,
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primaryButton,
+.secondaryButton,
+.deleteButton {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: 1px solid #6f7b67;
+  background: #6f7b67;
+  color: #f6f1ea;
+}
+
+.primaryButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.secondaryButton,
+.deleteButton {
+  border: 1px solid #afa18c;
+  background: transparent;
+  color: #3e4a42;
+}
+
+.list {
+  display: grid;
+  gap: 24px;
+}
+
+.emptyState,
+.card {
+  padding: 24px;
+}
+
+.card {
+  display: grid;
+  gap: 24px;
+}
+
+.meta {
+  font-size: 15px;
+}
+
+.nextRun {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+@media (max-width: 920px) {
+  .page {
+    padding-top: 48px;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 32px 16px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .weekdays {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .deleteButton {
+    flex: 1;
+  }
+}
