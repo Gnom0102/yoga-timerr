@@ -2,6 +2,7 @@ import {
   getProgramDuration,
   type YogaProgram,
 } from "../../../entities/program";
+import { Button, Card } from "../../../shared/ui";
 import { formatDate } from "../../../shared/utils/formatDate";
 import { formatDuration } from "../../../shared/utils/formatDuration";
 
@@ -18,36 +19,23 @@ export function ProgramCard({ program, onOpen, onDelete }: ProgramCardProps) {
   const phaseCount = program.phases.length;
 
   return (
-    <article className={styles.card}>
-      <div className={styles.content}>
-        <p className={styles.caption}>Практика</p>
-
-        <h2 className={styles.title}>{program.name || "Без названия"}</h2>
-
-        <div className={styles.meta}>
-          <span>{formatDuration(totalDurationSeconds)}</span>
-          <span>{phaseCount} этапов</span>
-          <span>Обновлено {formatDate(program.updatedAt)}</span>
-        </div>
+    <Card
+      caption="Практика"
+      title={program.name || "Без названия"}
+      actions={
+        <>
+          <Button onClick={() => onOpen(program)}>Открыть</Button>
+          <Button variant="secondary" onClick={() => onDelete(program.id)}>
+            Удалить
+          </Button>
+        </>
+      }
+    >
+      <div className={styles.meta}>
+        <span>{formatDuration(totalDurationSeconds)}</span>
+        <span>{phaseCount} этапов</span>
+        <span>Обновлено {formatDate(program.updatedAt)}</span>
       </div>
-
-      <div className={styles.actions}>
-        <button
-          className={styles.primaryButton}
-          type="button"
-          onClick={() => onOpen(program)}
-        >
-          Открыть
-        </button>
-
-        <button
-          className={styles.deleteButton}
-          type="button"
-          onClick={() => onDelete(program.id)}
-        >
-          Удалить
-        </button>
-      </div>
-    </article>
+    </Card>
   );
 }

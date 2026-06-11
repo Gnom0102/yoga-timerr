@@ -2,6 +2,7 @@
 
 import type { YogaProgram } from "../../entities/program";
 import { ProgressCircle, useTimerEngine } from "../../features/timer";
+import { Button, Card } from "../../shared/ui";
 import { UseTimerSounds } from "../../shared/hooks/useTimerSounds";
 
 import styles from "./TimerScreen.module.css";
@@ -77,9 +78,9 @@ export function TimerScreenPage({
     <main className={styles.page}>
       <section className={styles.screen} aria-labelledby="timer-title">
         <header className={styles.header}>
-          <button className={styles.backButton} type="button" onClick={onBack}>
+          <Button variant="secondary" onClick={onBack}>
             Назад
-          </button>
+          </Button>
 
           <div className={styles.heading}>
             <p className={styles.caption}>Практика</p>
@@ -104,28 +105,22 @@ export function TimerScreenPage({
           label={isCompleted ? "Готово" : "Осталось"}
         />
 
-        <section className={styles.nextBlock}>
-          <p className={styles.caption}>Следующий этап</p>
-          <h3>{nextPhase?.name ?? "Завершение практики"}</h3>
-        </section>
+        <Card
+          as="section"
+          className={styles.nextBlock}
+          caption="Следующий этап"
+          title={nextPhase?.name ?? "Завершение практики"}
+        />
 
         <div className={styles.controls}>
-          <button
-            className={styles.primaryButton}
-            type="button"
-            onClick={handlePrimaryClick}
-          >
+          <Button size="large" fullWidth onClick={handlePrimaryClick}>
             {primaryLabel}
-          </button>
+          </Button>
 
           {!isIdle && !isCompleted ? (
-            <button
-              className={styles.secondaryButton}
-              type="button"
-              onClick={reset}
-            >
+            <Button variant="secondary" size="large" onClick={reset}>
               Сброс
-            </button>
+            </Button>
           ) : null}
         </div>
       </section>

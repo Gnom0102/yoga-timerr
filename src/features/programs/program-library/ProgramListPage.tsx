@@ -7,6 +7,7 @@ import {
   getProgramDuration,
   type YogaProgram,
 } from "../../../entities/program";
+import { Card, PageLayout } from "../../../shared/ui";
 
 import styles from "./ProgramListPage.module.css";
 
@@ -54,74 +55,58 @@ export function ProgramListPage({ onOpenProgram }: ProgramListPageProps) {
   };
 
   return (
-    <main className={styles.page}>
-      <section
-        className={styles.library}
-        aria-labelledby="program-library-title"
-      >
-        <header className={styles.header}>
-          <p className={styles.caption}>Program Library</p>
-          <h1 id="program-library-title">Сохранённые практики</h1>
-          <p className={styles.description}>
-            Выберите программу для занятия или удалите то, что больше не нужно.
-          </p>
-        </header>
-
-        {sortedPrograms.length === 0 ? (
-          <div className={styles.emptyState}>
-            <p className={styles.caption}>Пока пусто</p>
-            <h2>Нет сохранённых программ</h2>
-            <p>
-              Создайте первую практику в конструкторе, и она появится в этом
-              списке.
-            </p>
+    <PageLayout
+      caption="Program Library"
+      title="Сохраненные практики"
+      description="Выберите программу для занятия или удалите то, что больше не нужно."
+    >
+      {sortedPrograms.length === 0 ? (
+        <div className={styles.emptyState}>
+          <Card
+            caption="Пока пусто"
+            title="Нет сохранённых программ"
+            description="Создайте первую практику в конструкторе, и она появится в этом списке."
+          />
+        </div>
+      ) : (
+        <div className={styles.content}>
+          <div className={styles.list} aria-label="Список сохранённых программ">
+            {sortedPrograms.map((program) => (
+              <ProgramCard
+                key={program.id}
+                program={program}
+                onOpen={handleOpenProgram}
+                onDelete={handleDeleteProgram}
+              />
+            ))}
           </div>
-        ) : (
-          <div className={styles.content}>
-            <div
-              className={styles.list}
-              aria-label="Список сохранённых программ"
-            >
-              {sortedPrograms.map((program) => (
-                <ProgramCard
-                  key={program.id}
-                  program={program}
-                  onOpen={handleOpenProgram}
-                  onDelete={handleDeleteProgram}
-                />
-              ))}
-            </div>
 
-            {selectedProgram ? (
-              <aside
-                className={styles.preview}
-                aria-labelledby="opened-program-title"
-              >
-                <p className={styles.caption}>Открытая программа</p>
-                <h2 id="opened-program-title">
-                  {selectedProgram.name || "Без названия"}
-                </h2>
+          {selectedProgram ? (
+            <aside aria-labelledby="opened-program-title">
+              <Card
+                caption="Открытая программа"
+                title={selectedProgram.name || "Без названия"}
+              />
 
-                <p className={styles.previewMeta}>
-                  {formatDuration(getProgramDuration(selectedProgram))}
-                </p>
+              <p className={styles.previewMeta}>
+                {formatDuration(getProgramDuration(selectedProgram))}
+              </p>
 
-                <ol className={styles.phaseList}>
-                  {selectedProgram.phases.map((phase, index) => (
-                    <li className={styles.phaseItem} key={phase.id}>
-                      <span className={styles.phaseNumber}>{index + 1}</span>
-                      <div>
-                        <h3>{phase.name}</h3>
-                        <p>{formatDuration(phase.durationSeconds)}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </aside>
-            ) : null}
-          </div>
-        )}
-      </section>
-    </main>
+              <ol className={styles.phaseList}>
+                {selectedProgram.phases.map((phase, index) => (
+                  <li className={styles.phaseItem} key={phase.id}>
+                    <span className={styles.phaseNumber}>{index + 1}</span>
+                    <div>
+                      <h3>{phase.name}</h3>
+                      <p>{formatDuration(phase.durationSeconds)}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </aside>
+          ) : null}
+        </div>
+      )}
+    </PageLayout>
   );
 }
