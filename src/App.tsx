@@ -1,11 +1,17 @@
+import { useState } from "react";
+
+import type { YogaProgram } from "./entities/program";
 import { ProgramListPage } from "./features/programs/program-library/ProgramListPage";
 
-import "./App.css";
-import { useState } from "react";
 import { TimerScreenPage } from "./pages/timer";
-import type { YogaProgram } from "./entities/program";
+
+import "./App.css";
+import { SchedulePage } from "./pages/schedule/SchedulePage";
+
+type AppScreen = "programs" | "schedule";
 
 function App() {
+  const [screen, setScreen] = useState<AppScreen>("programs");
   const [activeProgram, setActiveProgram] = useState<YogaProgram | null>(null);
 
   if (activeProgram) {
@@ -18,7 +24,37 @@ function App() {
     );
   }
 
-  return <ProgramListPage onOpenProgram={setActiveProgram} />;
+  return (
+    <>
+      <nav className="appNav" aria-label="Основная навигация">
+        <button
+          className={
+            screen === "programs" ? "appNavButtonActive" : "appNavButton"
+          }
+          type="button"
+          onClick={() => setScreen("programs")}
+        >
+          Практики
+        </button>
+
+        <button
+          className={
+            screen === "schedule" ? "appNavButtonActive" : "appNavButton"
+          }
+          type="button"
+          onClick={() => setScreen("schedule")}
+        >
+          Расписание
+        </button>
+      </nav>
+
+      {screen === "programs" ? (
+        <ProgramListPage onOpenProgram={setActiveProgram} />
+      ) : (
+        <SchedulePage onOpenProgram={setActiveProgram} />
+      )}
+    </>
+  );
 }
 
 export default App;

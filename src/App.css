@@ -1,0 +1,49 @@
+.appNav {
+  position: fixed;
+  z-index: 10;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid #afa18c;
+  border-radius: 8px;
+  background: rgba(246, 241, 234, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.appNavButton,
+.appNavButtonActive {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.appNavButton {
+  background: transparent;
+  color: #3e4a42;
+}
+
+.appNavButtonActive {
+  background: #6f7b67;
+  color: #f6f1ea;
+}
+
+@media (max-width: 640px) {
+  .appNav {
+    position: static;
+    justify-content: center;
+    padding: 12px;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    background: #f6f1ea;
+  }
+
+  .appNavButton,
+  .appNavButtonActive {
+    flex: 1;
+  }
+}
