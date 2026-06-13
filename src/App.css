@@ -6,9 +6,9 @@
   display: flex;
   gap: 8px;
   padding: 6px;
-  border: 1px solid #afa18c;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: rgba(246, 241, 234, 0.92);
+  background: var(--color-nav-background);
   backdrop-filter: blur(12px);
 }
 
@@ -24,12 +24,12 @@
 
 .appNavButton {
   background: transparent;
-  color: #3e4a42;
+  color: var(--color-text);
 }
 
 .appNavButtonActive {
-  background: #6f7b67;
-  color: #f6f1ea;
+  background: var(--color-primary);
+  color: var(--color-background);
 }
 
 @media (max-width: 640px) {
@@ -39,7 +39,7 @@
     padding: 12px;
     border-width: 0 0 1px;
     border-radius: 0;
-    background: #f6f1ea;
+    background: var(--color-background);
   }
 
   .appNavButton,

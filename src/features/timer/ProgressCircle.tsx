@@ -2,6 +2,7 @@ import styles from "./ProgressCircle.module.css";
 
 interface ProgressCircleProps {
   progress: number;
+  percentProgress?: number;
   remainingSeconds: number;
   label?: string;
   size?: number;
@@ -17,17 +18,19 @@ const formatTime = (totalSeconds: number) => {
 
 export function ProgressCircle({
   progress,
+  percentProgress = progress,
   remainingSeconds,
   label = "Осталось",
-  size = 280,
+  size = 360,
 }: ProgressCircleProps) {
   const safeProgress = Math.min(1, Math.max(0, progress));
+  const safePercentProgress = Math.min(1, Math.max(0, percentProgress));
   const safeSize = Math.max(220, size);
-  const strokeWidth = 8;
+  const strokeWidth = 16;
   const radius = safeSize / 2 - strokeWidth / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference * (1 - safeProgress);
-  const percent = Math.round(safeProgress * 100);
+  const percent = Math.round(safePercentProgress * 100);
 
   return (
     <div

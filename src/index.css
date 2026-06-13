@@ -1,0 +1,46 @@
+:root {
+  /* Core palette */
+  --color-background: #f6f1ea;
+  --color-surface: #dccfc0;
+  --color-border: #afa18c;
+  --color-primary: #6f7b67;
+  --color-text: #3e4a42;
+  --color-muted: #9a958e;
+  --color-danger: #8f4c3f;
+
+  /* Transparent UI states */
+  --color-nav-background: rgba(246, 241, 234, 0.92);
+  --color-surface-soft: rgba(246, 241, 234, 0.42);
+  --color-border-soft: rgba(175, 161, 140, 0.42);
+  --color-border-subtle: rgba(175, 161, 140, 0.26);
+  --color-text-placeholder: rgba(62, 74, 66, 0.58);
+  --color-text-secondary: rgba(62, 74, 66, 0.72);
+  --color-backdrop: rgba(62, 74, 66, 0.38);
+  --color-shadow-soft: rgba(62, 74, 66, 0.18);
+  --color-focus-primary: rgba(111, 123, 103, 0.32);
+  --color-focus-primary-soft: rgba(111, 123, 103, 0.22);
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-height: 100%;
+    background: var(--color-background);
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100%;
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+  }
+
+  #root {
+    min-height: 100dvh;
+    background: var(--color-background);
+  }
+}

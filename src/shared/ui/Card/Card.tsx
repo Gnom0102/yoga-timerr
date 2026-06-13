@@ -46,17 +46,19 @@ export function Card({
         <header className={styles.header}>
           <div className={styles.heading}>
             {caption ? <p className={styles.caption}>{caption}</p> : null}
-            {title ? <h2 className={styles.title}>{title}</h2> : null}
-            {description ? (
-              <p className={styles.description}>{description}</p>
-            ) : null}
+            <div>
+              {title ? <h2 className={styles.title}>{title}</h2> : null}
+              {description ? (
+                <p className={styles.description}>{description}</p>
+              ) : null}
+            </div>
           </div>
 
           {actions ? <div className={styles.actions}>{actions}</div> : null}
         </header>
       ) : null}
 
-      {children ? <div className={styles.content}>{children}</div> : null}
+      {children ? <div>{children}</div> : null}
 
       {footer ? <footer className={styles.footer}>{footer}</footer> : null}
     </Component>

@@ -1,16 +1,16 @@
 .card {
   box-sizing: border-box;
   border-radius: 8px;
-  color: #3e4a42;
+  color: var(--color-text);
 }
 
 .surface {
-  border: 1px solid #afa18c;
-  background: #dccfc0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .outline {
-  border: 1px solid #afa18c;
+  border: 1px solid var(--color-border);
   background: transparent;
 }
 
@@ -40,7 +40,7 @@
 
 .caption {
   margin: 0 0 8px;
-  color: #6f7b67;
+  color: var(--color-primary);
   font-size: 12px;
   font-weight: 700;
   line-height: 1.3;
@@ -50,7 +50,7 @@
 
 .title {
   margin: 0;
-  color: #3e4a42;
+  color: var(--color-text);
   font-size: 24px;
   line-height: 1.2;
   letter-spacing: 0;
@@ -58,8 +58,8 @@
 }
 
 .description {
-  margin: 12px 0 0;
-  color: #3e4a42;
+  margin: 0 0;
+  color: var(--color-text);
   font-size: 16px;
   line-height: 1.6;
 }

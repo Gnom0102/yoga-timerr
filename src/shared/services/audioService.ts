@@ -1,5 +1,3 @@
-// file: src/shared/services/audioService.ts
-
 type TimerSound = "start" | "phaseChange" | "complete";
 
 type OscillatorKind = OscillatorType;
@@ -20,6 +18,9 @@ type WindowWithWebkitAudioContext = Window &
 class AudioService {
   private audioContext: AudioContext | undefined;
   private masterGain: GainNode | undefined;
+  private readonly defaultMasterGain = 0.22;
+  private volume = 1;
+  private isMuted = false;
 
   async unlock(): Promise<void> {
     const context = this.getAudioContext();
@@ -43,6 +44,16 @@ class AudioService {
 
   playComplete(): void {
     this.play("complete");
+  }
+
+  setVolume(volume: number): void {
+    this.volume = Math.min(1, Math.max(0, volume));
+    this.applyMasterGain();
+  }
+
+  setMuted(isMuted: boolean): void {
+    this.isMuted = isMuted;
+    this.applyMasterGain();
   }
 
   private play(sound: TimerSound): void {
@@ -113,10 +124,19 @@ class AudioService {
 
     this.audioContext = new AudioContextConstructor();
     this.masterGain = this.audioContext.createGain();
-    this.masterGain.gain.setValueAtTime(0.22, this.audioContext.currentTime);
+    this.applyMasterGain();
     this.masterGain.connect(this.audioContext.destination);
 
     return this.audioContext;
+  }
+
+  private applyMasterGain(): void {
+    if (!this.audioContext || !this.masterGain) {
+      return;
+    }
+
+    const gain = this.isMuted ? 0 : this.defaultMasterGain * this.volume;
+    this.masterGain.gain.setValueAtTime(gain, this.audioContext.currentTime);
   }
 
   private getSoundTones(sound: TimerSound): SoundTone[] {

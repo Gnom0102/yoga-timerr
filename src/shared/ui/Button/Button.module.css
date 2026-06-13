@@ -32,30 +32,30 @@
 }
 
 .primary {
-  border-color: #6f7b67;
-  background: #6f7b67;
-  color: #f6f1ea;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-background);
 }
 
 .secondary {
-  border-color: #afa18c;
+  border-color: var(--color-border);
   background: transparent;
-  color: #3e4a42;
+  color: var(--color-text);
 }
 
 .ghost {
   border-color: transparent;
   background: transparent;
-  color: #3e4a42;
+  color: var(--color-text);
 }
 
 .icon {
   width: 44px;
   min-width: 44px;
   padding: 0;
-  border-color: #afa18c;
+  border-color: var(--color-border);
   background: transparent;
-  color: #3e4a42;
+  color: var(--color-text);
 }
 
 .button:hover:not(:disabled) {
@@ -63,7 +63,7 @@
 }
 
 .button:focus-visible {
-  outline: 3px solid rgba(111, 123, 103, 0.32);
+  outline: 3px solid var(--color-focus-primary);
   outline-offset: 3px;
 }
 

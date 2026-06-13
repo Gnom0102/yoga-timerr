@@ -5,6 +5,17 @@ import type { TimerState } from "./types";
 const FIRST_PHASE_INDEX = 0;
 const ONE_SECOND: DurationSeconds = 1;
 
+const clampPhaseIndex = (program: YogaProgram, phaseIndex: number): number => {
+  if (program.phases.length === 0) {
+    return FIRST_PHASE_INDEX;
+  }
+
+  return Math.min(
+    Math.max(FIRST_PHASE_INDEX, phaseIndex),
+    program.phases.length - 1,
+  );
+};
+
 export const createInitialTimerState = (): TimerState => ({
   status: "idle",
   currentPhaseIndex: FIRST_PHASE_INDEX,
@@ -14,6 +25,7 @@ export const createInitialTimerState = (): TimerState => ({
 export const startTimer = (
   program: YogaProgram,
   now: ISODateString = new Date().toISOString(),
+  initialPhaseIndex = FIRST_PHASE_INDEX,
 ): TimerState => {
   if (program.phases.length === 0) {
     return {
@@ -27,7 +39,7 @@ export const startTimer = (
 
   return {
     status: "running",
-    currentPhaseIndex: FIRST_PHASE_INDEX,
+    currentPhaseIndex: clampPhaseIndex(program, initialPhaseIndex),
     elapsedSeconds: 0,
     startedAt: now,
   };
@@ -62,6 +74,17 @@ export const resumeTimer = (state: TimerState): TimerState => {
 
 export const resetTimer = (): TimerState => createInitialTimerState();
 
+export const resetCurrentPhaseTimer = (state: TimerState): TimerState => {
+  if (state.status === "completed") {
+    return state;
+  }
+
+  return {
+    ...state,
+    elapsedSeconds: 0,
+  };
+};
+
 export const tickTimer = (
   program: YogaProgram,
   state: TimerState,
@@ -73,6 +96,36 @@ export const tickTimer = (
   }
 
   return advanceTimer(program, state, Math.max(0, seconds), now);
+};
+
+export const goToNextPhase = (
+  program: YogaProgram,
+  state: TimerState,
+  now: ISODateString = new Date().toISOString(),
+): TimerState => {
+  if (state.status === "completed" || program.phases.length === 0) {
+    return state;
+  }
+
+  const nextPhaseIndex = state.currentPhaseIndex + 1;
+  const isLastPhase = nextPhaseIndex >= program.phases.length;
+
+  if (isLastPhase) {
+    return {
+      ...state,
+      status: "completed",
+      currentPhaseIndex: Math.max(FIRST_PHASE_INDEX, program.phases.length - 1),
+      elapsedSeconds: 0,
+      pausedAt: undefined,
+      completedAt: now,
+    };
+  }
+
+  return {
+    ...state,
+    currentPhaseIndex: nextPhaseIndex,
+    elapsedSeconds: 0,
+  };
 };
 
 export const getCurrentPhase = (
@@ -168,12 +221,15 @@ const advanceTimer = (
   return {
     ...state,
     status: "completed",
-    currentPhaseIndex: Math.max(0, program.phases.length - 1),
+    currentPhaseIndex: Math.max(FIRST_PHASE_INDEX, program.phases.length - 1),
     elapsedSeconds: 0,
     completedAt: now,
   };
 };
 
 const getProgramTotalSeconds = (program: YogaProgram): DurationSeconds => {
-  return program.phases.reduce((total, phase) => total + phase.durationSeconds, 0);
+  return program.phases.reduce(
+    (total, phase) => total + phase.durationSeconds,
+    0,
+  );
 };

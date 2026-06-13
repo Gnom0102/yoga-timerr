@@ -1,45 +1,256 @@
 .page {
-  min-height: 100vh;
+  position: relative;
+  min-height: 100dvh;
   display: grid;
-  place-items: center;
-  padding: 40px 24px;
-  background: #f6f1ea;
-  color: #3e4a42;
+  grid-template-columns: clamp(280px, 22vw, 344px) minmax(0, 1fr);
+  overflow: hidden;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.sidebar {
+  z-index: 2;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  min-height: 100dvh;
+  padding: 32px 22px 32px;
+  border-right: 1px solid var(--color-border-subtle);
+  background: rgba(246, 241, 234, 0.72);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--color-text);
+  font-size: clamp(24px, 2vw, 30px);
+  line-height: 1;
+}
+
+.brandIcon {
+  width: 64px;
+  height: 48px;
+  flex: 0 0 auto;
+}
+
+.sidebarNav {
+  display: grid;
+  gap: 12px;
+  margin-top: 76px;
+}
+
+.sidebarNavItem,
+.sidebarNavItemActive {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 18px;
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 17px;
+  text-decoration: none;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.sidebarNavItemActive {
+  background: rgba(220, 207, 192, 0.42);
+}
+
+.sidebarNavItem:hover,
+.sidebarNavItemActive:hover {
+  background: rgba(220, 207, 192, 0.32);
+}
+
+.todayCard {
+  align-self: end;
+  display: grid;
+  gap: 20px;
+  padding: 20px 18px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  background: rgba(246, 241, 234, 0.42);
+}
+
+.todayHeader,
+.todayRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.todayHeader span:last-child,
+.todayRow span:last-child {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.newPracticeButton {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  background: rgba(246, 241, 234, 0.5);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.newPracticeButton:hover {
+  border-color: var(--color-border);
+  background: rgba(220, 207, 192, 0.28);
 }
 
 .screen {
-  width: min(100%, 560px);
+  z-index: 1;
+  width: min(100%, 640px);
   display: grid;
-  gap: 32px;
+  gap: 28px;
+  justify-self: center;
+  align-self: start;
+  padding: 28px 24px 40px;
 }
 
 .header {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 24px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
-.heading {
-  display: grid;
-  gap: 8px;
+.headerControls {
+  width: min(100vw - 48px, 640px);
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.headerControls > * {
+  pointer-events: auto;
+}
+
+.headerCaption,
+.headerTitle {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   text-align: center;
 }
 
-.heading h1,
-.phaseBlock h2 {
+.headerTitle h1 {
   margin: 0;
-  color: #3e4a42;
+  color: var(--color-text);
+  font-size: clamp(30px, 3vw, 40px);
+  font-weight: 500;
   line-height: 1.15;
 }
 
-.heading h1 {
-  font-size: 28px;
+.timerBackButton {
+  margin-right: auto;
+}
+
+.timerResetPhaseButton {
+  min-height: 44px;
+  padding: 0 16px;
+  border-color: var(--color-border-soft);
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.timerResetPhaseButton > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.resetPhaseText {
+  white-space: nowrap;
+}
+
+.timerSoundButton > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timerVolumeControl {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.timerVolumeLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.timerVolumeSlider {
+  width: clamp(96px, 9vw, 136px);
+  accent-color: var(--color-primary);
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.timerVolumeSlider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-border-subtle);
+}
+
+.timerVolumeSlider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  appearance: none;
+}
+
+.timerVolumeSlider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-border-subtle);
+}
+
+.timerVolumeSlider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
 }
 
 .caption {
   margin: 0;
-  color: #afa18c;
+  color: var(--color-muted);
   font-size: 12px;
   line-height: 1;
   letter-spacing: 0;
@@ -53,39 +264,188 @@
 }
 
 .phaseBlock h2 {
-  font-size: 32px;
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(32px, 3.2vw, 42px);
+  font-weight: 500;
+  line-height: 1.15;
 }
 
 .phaseTime {
   margin: 0;
-  color: #6f7b67;
-  font-size: 16px;
+  color: var(--color-text-secondary);
+  font-size: 17px;
 }
 
 .nextBlock {
-  text-align: center;
-  border-radius: 24px;
+  border-color: var(--color-border-subtle);
+  border-radius: 8px;
+  background: rgba(246, 241, 234, 0.48);
+}
+
+.nextBlockCaption {
+  margin: 0 0 8px;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.nextBlockRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.nextBlockTitle {
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.nextBlockDuration {
+  flex-shrink: 0;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .controls {
   display: grid;
+  grid-template-columns: minmax(96px, auto) minmax(0, 1fr) 52px;
+  align-items: center;
   gap: 16px;
 }
 
-@media (max-width: 560px) {
+.controls > :nth-child(2) {
+  justify-self: center;
+  max-width: 320px;
+  border-radius: 999px;
+}
+
+.controls > :first-child,
+.controls > :last-child {
+  border-radius: 999px;
+}
+
+.botanicalDecor {
+  position: fixed;
+  right: max(-34px, -2vw);
+  bottom: -18px;
+  z-index: 0;
+  width: clamp(220px, 24vw, 380px);
+  color: rgba(175, 161, 140, 0.18);
+  pointer-events: none;
+}
+
+@media (max-width: 1180px) {
   .page {
-    padding: 32px 20px;
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+
+  .sidebar {
+    padding-inline: 18px;
+  }
+
+  .brand {
+    font-size: 24px;
+  }
+
+  .brandIcon {
+    width: 56px;
+  }
+}
+
+@media (max-width: 860px) {
+  .page {
+    display: block;
+  }
+
+  .sidebar,
+  .botanicalDecor {
+    display: none;
   }
 
   .screen {
-    gap: 28px;
+    width: min(100%, 600px);
+    margin: 0 auto;
+    padding: 28px 20px 40px;
   }
 
-  .header {
-    grid-template-columns: 1fr;
+  .headerControls {
+    position: static;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .timerBackButton {
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .screen {
+    gap: 26px;
+    padding: 24px 20px 32px;
+  }
+
+  .headerControls {
+    gap: 8px;
+  }
+
+  .timerResetPhaseButton {
+    width: 44px;
+    min-width: 44px;
+    padding: 0;
+  }
+
+  .timerResetPhaseButton > span {
+    justify-content: center;
+  }
+
+  .resetPhaseText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .timerVolumeSlider {
+    width: clamp(72px, 22vw, 104px);
+  }
+
+  .headerTitle h1 {
+    font-size: 28px;
   }
 
   .phaseBlock h2 {
     font-size: 28px;
+  }
+
+  .nextBlockRow {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .nextBlockTitle {
+    font-size: 22px;
+  }
+
+  .controls {
+    grid-template-columns: 88px minmax(0, 1fr) 52px;
+    gap: 10px;
   }
 }

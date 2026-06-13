@@ -1,25 +1,24 @@
-// file: src/pages/timer/TimerScreenPage.tsx
+import { useEffect, useState } from "react";
 
 import type { YogaProgram } from "../../entities/program";
-import { ProgressCircle, useTimerEngine } from "../../features/timer";
-import { Button, Card } from "../../shared/ui";
+import { useTimerEngine } from "../../features/timer";
 import { UseTimerSounds } from "../../shared/hooks/useTimerSounds";
+import { audioService } from "../../shared/services";
 
-import styles from "./TimerScreen.module.css";
+import {
+  NextStageCard,
+  TimerCircle,
+  TimerControls,
+  TimerHeader,
+  TimerPageLayout,
+  TimerStageInfo,
+} from "./components";
 
 interface TimerScreenPageProps {
   program: YogaProgram;
   onBack?: () => void;
   onComplete?: () => void;
 }
-
-const formatShortTime = (totalSeconds: number) => {
-  const safeSeconds = Math.max(0, Math.floor(totalSeconds));
-  const minutes = Math.floor(safeSeconds / 60);
-  const seconds = safeSeconds % 60;
-
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-};
 
 export function TimerScreenPage({
   program,
@@ -37,14 +36,32 @@ export function TimerScreenPage({
     pause,
     resume,
     reset,
+    resetCurrentPhase,
+    next,
   } = useTimerEngine(program);
 
   const { playStartSound } = UseTimerSounds(state);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
 
   const isIdle = state.status === "idle";
   const isRunning = state.status === "running";
   const isPaused = state.status === "paused";
   const isCompleted = state.status === "completed";
+
+  useEffect(() => {
+    audioService.setVolume(volume);
+  }, [volume]);
+
+  useEffect(() => {
+    audioService.setMuted(isMuted);
+  }, [isMuted]);
+
+  const phaseProgress = currentPhase
+    ? 1 - phaseRemainingSeconds / currentPhase.durationSeconds
+    : isCompleted
+      ? 1
+      : 0;
 
   const primaryLabel = isRunning
     ? "Пауза"
@@ -75,55 +92,51 @@ export function TimerScreenPage({
   };
 
   return (
-    <main className={styles.page}>
-      <section className={styles.screen} aria-labelledby="timer-title">
-        <header className={styles.header}>
-          <Button variant="secondary" onClick={onBack}>
-            Назад
-          </Button>
+    <TimerPageLayout>
+      <TimerHeader
+        title={program.name || "Без названия"}
+        onBack={onBack}
+        onResetPhase={resetCurrentPhase}
+        isResetPhaseDisabled={isCompleted}
+        isMuted={isMuted}
+        onToggleMuted={() => setIsMuted((currentValue) => !currentValue)}
+        volume={volume}
+        onVolumeChange={(nextVolume) => {
+          setVolume(nextVolume);
 
-          <div className={styles.heading}>
-            <p className={styles.caption}>Практика</p>
-            <h1 id="timer-title">{program.name || "Без названия"}</h1>
-          </div>
-        </header>
+          if (nextVolume > 0) {
+            setIsMuted(false);
+          }
+        }}
+      />
 
-        <section className={styles.phaseBlock} aria-live="polite">
-          <p className={styles.caption}>Текущий этап</p>
-          <h2>{currentPhase?.name ?? "Готово к началу"}</h2>
+      <TimerStageInfo
+        phaseName={currentPhase?.name ?? "Готово к началу"}
+        practiceRemainingSeconds={programRemainingSeconds}
+        isCompleted={isCompleted}
+      />
 
-          <p className={styles.phaseTime}>
-            {isCompleted
-              ? "Практика завершена"
-              : `В этапе осталось ${formatShortTime(phaseRemainingSeconds)}`}
-          </p>
-        </section>
+      <TimerCircle
+        progress={phaseProgress}
+        percentProgress={progress}
+        remainingSeconds={phaseRemainingSeconds}
+        label={isCompleted ? "Готово" : "Этап"}
+      />
 
-        <ProgressCircle
-          progress={progress}
-          remainingSeconds={programRemainingSeconds}
-          label={isCompleted ? "Готово" : "Осталось"}
-        />
+      <NextStageCard
+        title={nextPhase?.name ?? "Завершение практики"}
+        durationSeconds={nextPhase?.durationSeconds}
+        isDisabled={isCompleted}
+      />
 
-        <Card
-          as="section"
-          className={styles.nextBlock}
-          caption="Следующий этап"
-          title={nextPhase?.name ?? "Завершение практики"}
-        />
-
-        <div className={styles.controls}>
-          <Button size="large" fullWidth onClick={handlePrimaryClick}>
-            {primaryLabel}
-          </Button>
-
-          {!isIdle && !isCompleted ? (
-            <Button variant="secondary" size="large" onClick={reset}>
-              Сброс
-            </Button>
-          ) : null}
-        </div>
-      </section>
-    </main>
+      <TimerControls
+        primaryLabel={primaryLabel}
+        onPrimaryClick={handlePrimaryClick}
+        showReset={!isIdle && !isCompleted}
+        onReset={reset}
+        onNext={next}
+        isNextDisabled={isCompleted}
+      />
+    </TimerPageLayout>
   );
 }

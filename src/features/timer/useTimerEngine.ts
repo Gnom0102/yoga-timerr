@@ -1,4 +1,3 @@
-// file: src/features/timer/useTimerEngine.ts
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { YogaPhase, YogaProgram } from "../../entities/program";
@@ -10,7 +9,9 @@ import {
   getProgramElapsedSeconds,
   getProgramRemainingSeconds,
   getTimerProgress,
+  goToNextPhase,
   pauseTimer,
+  resetCurrentPhaseTimer,
   resetTimer,
   resumeTimer,
   startTimer,
@@ -31,6 +32,8 @@ export interface UseTimerEngineResult {
   pause: () => void;
   resume: () => void;
   reset: () => void;
+  resetCurrentPhase: () => void;
+  next: () => void;
 }
 
 export const useTimerEngine = (program: YogaProgram): UseTimerEngineResult => {
@@ -53,7 +56,9 @@ export const useTimerEngine = (program: YogaProgram): UseTimerEngineResult => {
   }, [program, state.status]);
 
   const start = useCallback(() => {
-    setState(startTimer(program));
+    setState((currentState) =>
+      startTimer(program, undefined, currentState.currentPhaseIndex),
+    );
   }, [program]);
 
   const pause = useCallback(() => {
@@ -68,6 +73,14 @@ export const useTimerEngine = (program: YogaProgram): UseTimerEngineResult => {
     setState(resetTimer());
   }, []);
 
+  const resetCurrentPhase = useCallback(() => {
+    setState((currentState) => resetCurrentPhaseTimer(currentState));
+  }, []);
+
+  const next = useCallback(() => {
+    setState((currentState) => goToNextPhase(program, currentState));
+  }, [program]);
+
   return useMemo(
     () => ({
       state,
@@ -81,7 +94,9 @@ export const useTimerEngine = (program: YogaProgram): UseTimerEngineResult => {
       pause,
       resume,
       reset,
+      resetCurrentPhase,
+      next,
     }),
-    [program, state, start, pause, resume, reset],
+    [program, state, start, pause, resume, reset, resetCurrentPhase, next],
   );
 };

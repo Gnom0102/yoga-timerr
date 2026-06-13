@@ -2,6 +2,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  color: #3e4a42;
+  color: var(--color-text);
   font-size: 14px;
 }
