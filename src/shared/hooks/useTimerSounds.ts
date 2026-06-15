@@ -6,7 +6,7 @@ export interface UseTimerSoundsResult {
   playStartSound: () => void;
 }
 
-export const UseTimerSounds = (
+export const useTimerSounds = (
   timerState: TimerState,
 ): UseTimerSoundsResult => {
   const previousStatusRef = useRef(timerState.status);

@@ -1,49 +1,330 @@
-.appNav {
-  position: fixed;
-  z-index: 10;
-  top: 24px;
-  right: 24px;
-  display: flex;
-  gap: 8px;
-  padding: 6px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-nav-background);
-  backdrop-filter: blur(12px);
+.appShell {
+  position: relative;
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 72% 16%,
+      rgba(255, 255, 255, 0.72),
+      transparent 34%
+    ),
+    var(--color-background);
 }
 
-.appNavButton,
-.appNavButtonActive {
-  min-height: 40px;
-  padding: 0 16px;
+.appShell::after {
+  content: "";
+  position: fixed;
+  right: -18px;
+  bottom: -89px;
+  width: min(400px, 28vw);
+  aspect-ratio: 3 / 4;
+  pointer-events: none;
+  opacity: 0.34;
+  background: url("./assets/ikebana-2.png") center / contain no-repeat;
+  mask-image: radial-gradient(ellipse at 58% 64%, #000 0 62%, transparent 82%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at 58% 64%,
+    #000 0 62%,
+    transparent 82%
+  );
+  animation: appDecorIn 720ms ease both;
+}
+
+.appSidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: 36px 24px 32px;
+  border-right: 1px solid var(--color-border-subtle);
+  background: rgba(246, 241, 234, 0.7);
+  backdrop-filter: blur(18px);
+}
+
+.appLogo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--color-text);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.appLogoSvg {
+  width: 64px;
+  height: 48px;
+  flex: 0 0 auto;
+  color: var(--color-primary);
+}
+
+.appLogoSvg path,
+.appSideNav svg path {
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.appSideNav {
+  display: grid;
+  gap: 10px;
+  margin-top: 72px;
+}
+
+.appSideNavButton,
+.appSideNavActive {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+  width: 100%;
+  padding: 0 18px;
+  border: 0;
   border-radius: 8px;
-  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 18px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.appSideNavButton:hover,
+.appSideNavActive {
+  background: rgba(220, 207, 192, 0.42);
+}
+
+.appTodayCard {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  margin-top: 44px;
+  padding: 20px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  background: rgba(246, 241, 234, 0.48);
+  animation: appSoftIn 420ms ease 80ms both;
+}
+
+.appTodayCard::before {
+  content: "";
+  position: absolute;
+  top: -26px;
+  right: 0;
+  left: 0;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(246, 241, 234, 0.34);
+}
+
+.appTodayHeader,
+.appTodayRow,
+.appSoundButton {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.appTodayHeader {
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.appTodayHeader span:last-child,
+.appTodayRow span:last-child {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.appTodayRow {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.appTodayEmpty {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.appNewPracticeButton,
+.appSoundButton {
+  min-height: 48px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  background: rgba(246, 241, 234, 0.48);
+  color: var(--color-text);
   font: inherit;
   cursor: pointer;
 }
 
-.appNavButton {
-  background: transparent;
-  color: var(--color-text);
+.appNewPracticeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
 }
 
-.appNavButtonActive {
+.appSoundButton {
+  align-items: center;
+  margin-top: 24px;
+  padding: 0 16px;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease;
+  animation: appSoftIn 420ms ease 120ms both;
+}
+
+.appSoundButton:hover {
+  border-color: var(--color-border);
+  background: rgba(220, 207, 192, 0.28);
+}
+
+.appMainArea {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  padding: 28px 40px 56px;
+  animation: appSoftIn 440ms ease both;
+}
+
+.appTopNav {
+  display: flex;
+  width: fit-content;
+  margin-left: auto;
+  margin-bottom: 24px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  background: rgba(246, 241, 234, 0.72);
+  overflow: hidden;
+  animation: appSoftIn 360ms ease 60ms both;
+}
+
+.appTopNavButton,
+.appTopNavActive {
+  min-width: 128px;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.appTopNavActive {
   background: var(--color-primary);
   color: var(--color-background);
 }
 
-@media (max-width: 640px) {
-  .appNav {
-    position: static;
-    justify-content: center;
-    padding: 12px;
-    border-width: 0 0 1px;
-    border-radius: 0;
-    background: var(--color-background);
+@keyframes appSoftIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
 
-  .appNavButton,
-  .appNavButtonActive {
-    flex: 1;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes appDecorIn {
+  from {
+    opacity: 0;
+    transform: translate(18px, 18px);
+  }
+
+  to {
+    opacity: 0.34;
+    transform: translate(0, 0);
+  }
+}
+
+@media (max-width: 980px) {
+  .appShell {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .appShell::after {
+    display: none;
+  }
+
+  .appSidebar {
+    position: static;
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .appLogo {
+    font-size: 24px;
+  }
+
+  .appLogoSvg {
+    width: 52px;
+    height: 40px;
+  }
+
+  .appSideNav {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 24px;
+  }
+
+  .appTodayCard,
+  .appSoundButton {
+    display: none;
+  }
+
+  .appMainArea {
+    padding: 20px 16px 40px;
+  }
+
+  .appTopNav {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appShell::after,
+  .appTodayCard,
+  .appSoundButton,
+  .appMainArea,
+  .appTopNav {
+    animation: none;
+  }
+
+  .appSideNavButton,
+  .appSideNavActive,
+  .appNewPracticeButton,
+  .appSoundButton,
+  .appTopNavButton,
+  .appTopNavActive {
+    transition: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .appSideNavButton,
+  .appSideNavActive {
+    min-height: 48px;
+    padding: 0 12px;
+    font-size: 15px;
   }
 }

@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { formatDuration } from "../../../shared/utils/formatDuration";
-import { programRepository } from "../../../shared/repositories";
+import {
+  programRepository,
+  scheduleRepository,
+} from "../../../shared/repositories";
 import { ProgramCard } from "./ProgramCard";
 import {
   getProgramDuration,
@@ -43,6 +46,10 @@ export function ProgramListPage({ onOpenProgram }: ProgramListPageProps) {
       return;
     }
 
+    const relatedSchedules = await scheduleRepository.getByProgramId(programId);
+    await Promise.all(
+      relatedSchedules.map((schedule) => scheduleRepository.delete(schedule.id)),
+    );
     await programRepository.delete(programId);
 
     setPrograms((currentPrograms) =>
@@ -65,7 +72,7 @@ export function ProgramListPage({ onOpenProgram }: ProgramListPageProps) {
           <Card
             caption="Пока пусто"
             title="Нет сохранённых программ"
-            description="Создайте первую практику в конструкторе, и она появится в этом списке."
+            description="Сохранённые практики появятся здесь, когда вы добавите их в приложение."
           />
         </div>
       ) : (

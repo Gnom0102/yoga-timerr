@@ -1,27 +1,27 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { calculateNextRun, type Schedule } from "../../../entities/schedule";
-import {
-  getProgramDuration,
-  type YogaProgram,
-} from "../../../entities/program";
-import {
-  programRepository,
-  scheduleRepository,
-} from "../../../shared/repositories";
-import { formatDuration } from "../../../shared/utils/formatDuration";
+import { calculateNextRun, type Schedule } from "./entities/schedule";
+import { getProgramDuration, type YogaProgram } from "./entities/program";
+import { programRepository, scheduleRepository } from "./shared/repositories";
+import { formatDuration } from "./shared/utils/formatDuration";
 
-import styles from "../TimerScreen.module.css";
+import "./App.css";
 
-interface TimerSidebarProps {
-  onOpenPrograms?: () => void;
-  onOpenSchedule?: () => void;
+type AppScreen = "programs" | "schedule";
+
+interface AppSidebarProps {
+  activeScreen: AppScreen;
+  sidebarVersion: number;
+  onOpenPrograms: () => void;
+  onOpenSchedule: () => void;
 }
 
-export function TimerSidebar({
+export function AppSidebar({
+  activeScreen,
+  sidebarVersion,
   onOpenPrograms,
   onOpenSchedule,
-}: TimerSidebarProps) {
+}: AppSidebarProps) {
   const [programs, setPrograms] = useState<YogaProgram[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
 
@@ -32,7 +32,7 @@ export function TimerSidebar({
         setSchedules(storedSchedules);
       },
     );
-  }, []);
+  }, [sidebarVersion]);
 
   const programsById = useMemo(() => {
     return new Map(programs.map((program) => [program.id, program]));
@@ -51,15 +51,19 @@ export function TimerSidebar({
   }, [schedules]);
 
   return (
-    <aside className={styles.sidebar} aria-label="Навигация">
-      <div className={styles.brand}>
+    <aside className="appSidebar" aria-label="Боковая навигация">
+      <div className="appLogo">
         <LotusIcon />
         <span>Yoga Timer</span>
       </div>
 
-      <nav className={styles.sidebarNav}>
+      <nav className="appSideNav" aria-label="Основная навигация">
         <button
-          className={styles.sidebarNavItemActive}
+          className={
+            activeScreen === "programs"
+              ? "appSideNavActive"
+              : "appSideNavButton"
+          }
           type="button"
           onClick={onOpenPrograms}
         >
@@ -68,7 +72,11 @@ export function TimerSidebar({
         </button>
 
         <button
-          className={styles.sidebarNavItem}
+          className={
+            activeScreen === "schedule"
+              ? "appSideNavActive"
+              : "appSideNavButton"
+          }
           type="button"
           onClick={onOpenSchedule}
         >
@@ -77,8 +85,8 @@ export function TimerSidebar({
         </button>
       </nav>
 
-      <section className={styles.todayCard} aria-label="Практики на сегодня">
-        <div className={styles.todayHeader}>
+      <section className="appTodayCard" aria-label="Практики на сегодня">
+        <div className="appTodayHeader">
           <span>Сегодня</span>
           <span>{getPracticeCountLabel(todaySchedules.length)}</span>
         </div>
@@ -91,18 +99,18 @@ export function TimerSidebar({
               : "";
 
             return (
-              <div className={styles.todayRow} key={schedule.id}>
+              <div className="appTodayRow" key={schedule.id}>
                 <span>{program?.name || "Практика не найдена"}</span>
                 {duration ? <span>{duration}</span> : null}
               </div>
             );
           })
         ) : (
-          <p className={styles.todayEmpty}>Сегодня практик не запланировано</p>
+          <p className="appTodayEmpty">Сегодня практик не запланировано</p>
         )}
 
         <button
-          className={styles.newPracticeButton}
+          className="appNewPracticeButton"
           type="button"
           onClick={onOpenSchedule}
         >
@@ -146,36 +154,16 @@ function getPracticeCountLabel(count: number) {
 function LotusIcon() {
   return (
     <svg
+      className="appLogoSvg"
       aria-hidden="true"
-      className={styles.brandIcon}
       fill="none"
       viewBox="0 0 64 48"
     >
-      <path
-        d="M32 42C20 32 20 17 32 5c12 12 12 27 0 37Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M31 42C17 39 8 29 8 14c14 3 23 13 23 28Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M33 42c14-3 23-13 23-28-14 3-23 13-23 28Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M32 42C21 45 11 42 3 34c11-3 21 0 29 8Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M32 42c11 3 21 0 29-8-11-3-21 0-29 8Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
+      <path d="M32 42C20 32 20 17 32 5c12 12 12 27 0 37Z" />
+      <path d="M31 42C17 39 8 29 8 14c14 3 23 13 23 28Z" />
+      <path d="M33 42c14-3 23-13 23-28-14 3-23 13-23 28Z" />
+      <path d="M32 42C21 45 11 42 3 34c11-3 21 0 29 8Z" />
+      <path d="M32 42c11 3 21 0 29-8-11-3-21 0-29 8Z" />
     </svg>
   );
 }
@@ -189,19 +177,8 @@ function LeafIcon() {
       viewBox="0 0 24 24"
       width="24"
     >
-      <path
-        d="M20 4C10 4 5 9 5 19c10 0 15-5 15-15Z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.7"
-      />
-      <path
-        d="M5 19 15 9"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.7"
-      />
+      <path d="M20 4C10 4 5 9 5 19c10 0 15-5 15-15Z" />
+      <path d="M5 19 15 9" />
     </svg>
   );
 }
@@ -215,13 +192,7 @@ function CalendarIcon() {
       viewBox="0 0 24 24"
       width="24"
     >
-      <path
-        d="M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.7"
-      />
+      <path d="M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" />
     </svg>
   );
 }

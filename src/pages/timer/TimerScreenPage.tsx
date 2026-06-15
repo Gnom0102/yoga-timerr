@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import type { YogaProgram } from "../../entities/program";
 import { useTimerEngine } from "../../features/timer";
-import { UseTimerSounds } from "../../shared/hooks/useTimerSounds";
+import { useTimerSounds } from "../../shared/hooks/useTimerSounds";
 import { audioService } from "../../shared/services";
 
 import {
@@ -18,12 +18,16 @@ interface TimerScreenPageProps {
   program: YogaProgram;
   onBack?: () => void;
   onComplete?: () => void;
+  onOpenPrograms?: () => void;
+  onOpenSchedule?: () => void;
 }
 
 export function TimerScreenPage({
   program,
   onBack,
   onComplete,
+  onOpenPrograms,
+  onOpenSchedule,
 }: TimerScreenPageProps) {
   const {
     state,
@@ -40,7 +44,7 @@ export function TimerScreenPage({
     next,
   } = useTimerEngine(program);
 
-  const { playStartSound } = UseTimerSounds(state);
+  const { playStartSound } = useTimerSounds(state);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
 
@@ -92,7 +96,10 @@ export function TimerScreenPage({
   };
 
   return (
-    <TimerPageLayout>
+    <TimerPageLayout
+      onOpenPrograms={onOpenPrograms}
+      onOpenSchedule={onOpenSchedule}
+    >
       <TimerHeader
         title={program.name || "Без названия"}
         onBack={onBack}

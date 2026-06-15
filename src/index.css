@@ -1,5 +1,4 @@
 :root {
-  /* Core palette */
   --color-background: #f6f1ea;
   --color-surface: #dccfc0;
   --color-border: #afa18c;
@@ -8,7 +7,6 @@
   --color-muted: #9a958e;
   --color-danger: #8f4c3f;
 
-  /* Transparent UI states */
   --color-nav-background: rgba(246, 241, 234, 0.92);
   --color-surface-soft: rgba(246, 241, 234, 0.42);
   --color-border-soft: rgba(175, 161, 140, 0.42);

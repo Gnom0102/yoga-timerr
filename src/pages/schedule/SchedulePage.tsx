@@ -13,9 +13,13 @@ import { useSchedulePage } from "./useSchedulePage";
 
 interface SchedulePageProps {
   onOpenProgram?: (program: YogaProgram) => void;
+  onScheduleChange?: () => void;
 }
 
-export function SchedulePage({ onOpenProgram }: SchedulePageProps) {
+export function SchedulePage({
+  onOpenProgram,
+  onScheduleChange,
+}: SchedulePageProps) {
   const {
     editingScheduleId,
     formState,
@@ -29,7 +33,7 @@ export function SchedulePage({ onOpenProgram }: SchedulePageProps) {
     handleSubmit,
     handleToggleSchedule,
     handleToggleWeekday,
-  } = useSchedulePage();
+  } = useSchedulePage({ onScheduleChange });
 
   return (
     <PageLayout

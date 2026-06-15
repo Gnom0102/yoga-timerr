@@ -28,8 +28,16 @@ export interface ScheduleFormState {
   enabled: boolean;
 }
 
+interface UseSchedulePageOptions {
+  onScheduleChange?: () => void;
+}
+
 const createId = () => {
-  return crypto.randomUUID();
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 };
 
 const getTodayInputValue = () => {
@@ -46,7 +54,9 @@ const getInitialFormState = (): ScheduleFormState => ({
   enabled: true,
 });
 
-export const useSchedulePage = () => {
+export const useSchedulePage = ({
+  onScheduleChange,
+}: UseSchedulePageOptions = {}) => {
   const [programs, setPrograms] = useState<YogaProgram[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [editingScheduleId, setEditingScheduleId] = useState<string | null>(
@@ -126,6 +136,7 @@ export const useSchedulePage = () => {
     }
 
     await scheduleRepository.delete(scheduleId);
+    onScheduleChange?.();
 
     setSchedules((currentSchedules) =>
       currentSchedules.filter((schedule) => schedule.id !== scheduleId),
@@ -144,6 +155,7 @@ export const useSchedulePage = () => {
     };
 
     await scheduleRepository.update(updatedSchedule);
+    onScheduleChange?.();
 
     setSchedules((currentSchedules) =>
       currentSchedules.map((item) =>
@@ -182,6 +194,7 @@ export const useSchedulePage = () => {
 
     if (existingSchedule) {
       await scheduleRepository.update(schedule);
+      onScheduleChange?.();
 
       setSchedules((currentSchedules) =>
         currentSchedules.map((item) =>
@@ -190,6 +203,7 @@ export const useSchedulePage = () => {
       );
     } else {
       await scheduleRepository.save(schedule);
+      onScheduleChange?.();
 
       setSchedules((currentSchedules) => [...currentSchedules, schedule]);
     }

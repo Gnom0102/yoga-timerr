@@ -2,17 +2,22 @@ import { useState } from "react";
 
 import type { YogaProgram } from "./entities/program";
 import { ProgramListPage } from "./features/programs/program-library/ProgramListPage";
-
+import { SchedulePage } from "./pages/schedule/SchedulePage";
 import { TimerScreenPage } from "./pages/timer";
+import { AppSidebar } from "./AppSidebar";
 
 import "./App.css";
-import { SchedulePage } from "./pages/schedule/SchedulePage";
 
 type AppScreen = "programs" | "schedule";
 
 function App() {
   const [screen, setScreen] = useState<AppScreen>("programs");
   const [activeProgram, setActiveProgram] = useState<YogaProgram | null>(null);
+  const [sidebarVersion, setSidebarVersion] = useState(0);
+
+  const refreshSidebar = () => {
+    setSidebarVersion((version) => version + 1);
+  };
 
   if (activeProgram) {
     return (
@@ -20,40 +25,60 @@ function App() {
         program={activeProgram}
         onBack={() => setActiveProgram(null)}
         onComplete={() => setActiveProgram(null)}
+        onOpenPrograms={() => {
+          setActiveProgram(null);
+          setScreen("programs");
+        }}
+        onOpenSchedule={() => {
+          setActiveProgram(null);
+          setScreen("schedule");
+        }}
       />
     );
   }
 
   return (
-    <>
-      <nav className="appNav" aria-label="Основная навигация">
-        <button
-          className={
-            screen === "programs" ? "appNavButtonActive" : "appNavButton"
-          }
-          type="button"
-          onClick={() => setScreen("programs")}
-        >
-          Практики
-        </button>
+    <div className="appShell">
+      <AppSidebar
+        activeScreen={screen}
+        sidebarVersion={sidebarVersion}
+        onOpenPrograms={() => setScreen("programs")}
+        onOpenSchedule={() => setScreen("schedule")}
+      />
 
-        <button
-          className={
-            screen === "schedule" ? "appNavButtonActive" : "appNavButton"
-          }
-          type="button"
-          onClick={() => setScreen("schedule")}
-        >
-          Расписание
-        </button>
-      </nav>
+      <div className="appMainArea">
+        <nav className="appTopNav" aria-label="Переключатель страниц">
+          <button
+            className={
+              screen === "programs" ? "appTopNavActive" : "appTopNavButton"
+            }
+            type="button"
+            onClick={() => setScreen("programs")}
+          >
+            Практики
+          </button>
 
-      {screen === "programs" ? (
-        <ProgramListPage onOpenProgram={setActiveProgram} />
-      ) : (
-        <SchedulePage onOpenProgram={setActiveProgram} />
-      )}
-    </>
+          <button
+            className={
+              screen === "schedule" ? "appTopNavActive" : "appTopNavButton"
+            }
+            type="button"
+            onClick={() => setScreen("schedule")}
+          >
+            Расписание
+          </button>
+        </nav>
+
+        {screen === "programs" ? (
+          <ProgramListPage onOpenProgram={setActiveProgram} />
+        ) : (
+          <SchedulePage
+            onOpenProgram={setActiveProgram}
+            onScheduleChange={refreshSidebar}
+          />
+        )}
+      </div>
+    </div>
   );
 }
 

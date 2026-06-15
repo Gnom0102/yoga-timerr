@@ -79,9 +79,9 @@ const calculateDailyRun = (settings: ScheduleSettings, now: Date) => {
     differenceInCalendarDays(startOfDay(now), startOfDay(startsAt)),
   );
 
-  const daysToNextInterval = interval - (daysPassed % interval);
+  const daysToNextInterval = (interval - (daysPassed % interval)) % interval;
   let candidate = applyTime(
-    addDays(startsAt, daysToNextInterval),
+    addDays(startsAt, daysPassed + daysToNextInterval),
     settings.time,
   );
 
