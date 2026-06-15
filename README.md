@@ -1,73 +1,38 @@
-# React + TypeScript + Vite
+# Yoga Timer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Yoga Timer - веб-приложение для спокойного запуска йога-практик по фазам. В нем можно выбрать сохраненную программу, пройти занятие с большим таймером, видеть текущий и следующий этап, а также настроить расписание практик.
 
-Currently, two official plugins are available:
+## Возможности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- библиотека сохраненных программ йоги;
+- пошаговый таймер с фазами практики и общим прогрессом;
+- быстрые действия таймера: старт, пауза, продолжение, переход к следующей фазе и сброс;
+- расписание занятий: один раз, ежедневно или еженедельно;
+- хранение программ и расписаний в браузере;
+- адаптивный интерфейс на React и CSS Modules.
 
-## React Compiler
+## Технологии
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19;
+- TypeScript;
+- Vite;
+- date-fns;
+- Vitest для unit-тестов;
+- ESLint.
 
-## Expanding the ESLint configuration
+## Структура проекта
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+  entities/      Доменная логика программ, таймера и расписания
+  features/      Функциональные блоки приложения
+  pages/         Экран таймера и страница расписания
+  shared/        Общие UI-компоненты, утилиты, сервисы и константы
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Тесты
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Unit-тесты покрывают чистую доменную логику:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `timerEngine` - переходы между фазами, завершение практики и расчет прогресса;
+- `calculateNextRun` - расчет следующего запуска для ежедневного и еженедельного расписания.
