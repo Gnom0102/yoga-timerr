@@ -48,7 +48,9 @@ export function ProgramListPage({ onOpenProgram }: ProgramListPageProps) {
 
     const relatedSchedules = await scheduleRepository.getByProgramId(programId);
     await Promise.all(
-      relatedSchedules.map((schedule) => scheduleRepository.delete(schedule.id)),
+      relatedSchedules.map((schedule) =>
+        scheduleRepository.delete(schedule.id),
+      ),
     );
     await programRepository.delete(programId);
 

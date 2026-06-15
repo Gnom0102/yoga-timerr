@@ -1,2 +1,1 @@
-export type { DurationSeconds, EntityId, ISODateString } from './common'
-
+export type { DurationSeconds, EntityId, ISODateString } from "./common";

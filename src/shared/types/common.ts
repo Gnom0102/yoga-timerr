@@ -1,6 +1,5 @@
-export type EntityId = string
+export type EntityId = string;
 
-export type ISODateString = string
+export type ISODateString = string;
 
-export type DurationSeconds = number
-
+export type DurationSeconds = number;
